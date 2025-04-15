@@ -1,8 +1,47 @@
+"use client";
+
+import { authClient } from "@/lib/auth-client";
 import { IconBrandGithub } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export default function SignUp() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const name = formData.get("name") as string;
+
+    authClient.signUp.email(
+      {
+        email,
+        password,
+        name,
+        callbackURL: "/dashboard",
+      },
+      {
+        onRequest: () => {
+          setIsLoading(true);
+        },
+        onSuccess: () => {
+          router.push("/dashboard");
+          toast.success("Compte créé avec succès");
+          router.refresh();
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message);
+        },
+      }
+    );
+  };
+
   return (
     <div className="grid min-h-screen grid-cols-1 md:grid-cols-2">
       <div className="flex w-full items-center justify-center bg-gray-50 px-6 py-12 dark:bg-neutral-950">
@@ -23,7 +62,7 @@ export default function SignUp() {
             Créer un compte
           </h2>
 
-          <form className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label
                 htmlFor="name"
@@ -33,6 +72,7 @@ export default function SignUp() {
               </label>
               <input
                 id="name"
+                name="name"
                 type="text"
                 placeholder="John Doe"
                 className="mt-1 w-full rounded-md border-0 bg-white px-4 py-2 text-black shadow-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:bg-neutral-900 dark:text-white"
@@ -48,6 +88,7 @@ export default function SignUp() {
               </label>
               <input
                 id="email"
+                name="email"
                 type="email"
                 placeholder="vous@exemple.com"
                 className="mt-1 w-full rounded-md border-0 bg-white px-4 py-2 text-black shadow-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:bg-neutral-900 dark:text-white"
@@ -63,6 +104,7 @@ export default function SignUp() {
               </label>
               <input
                 id="password"
+                name="password"
                 type="password"
                 placeholder="••••••••"
                 className="mt-1 w-full rounded-md border-0 bg-white px-4 py-2 text-black shadow-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:bg-neutral-900 dark:text-white"
@@ -71,6 +113,7 @@ export default function SignUp() {
 
             <button
               type="submit"
+              disabled={isLoading}
               className="w-full rounded-full bg-black px-4 py-2 text-white transition hover:bg-black/90 dark:bg-white dark:text-black"
             >
               S'inscrire
