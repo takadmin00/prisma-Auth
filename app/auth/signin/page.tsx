@@ -11,6 +11,7 @@ import { toast } from "sonner";
 export default function SignIn() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [isMagicLink, setIsMagicLink] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,27 +19,50 @@ export default function SignIn() {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    authClient.signIn.email(
-      {
-        email,
-        password,
-        callbackURL: "/dashboard",
-      },
-      {
-        onRequest: () => {
-          setIsLoading(true);
+    if (isMagicLink) {
+      authClient.signIn.magicLink(
+        {
+          email,
+          callbackURL: "/dashboard",
         },
-        onSuccess: () => {
-          router.push("/dashboard");
-          toast.success("Connexion réussie");
-          router.refresh();
+        {
+          onRequest: () => {
+            setIsLoading(true);
+          },
+          onSuccess: () => {
+            router.push("/auth/verify");
+            toast.success("Email envoyé avec succès");
+            router.refresh();
+          },
+          onError: (ctx) => {
+            setIsLoading(false);
+            toast.error(ctx.error.message);
+          },
+        }
+      );
+    } else {
+      authClient.signIn.email(
+        {
+          email,
+          password,
+          callbackURL: "/dashboard",
         },
-        onError: (ctx) => {
-          setIsLoading(false);
-          toast.error(ctx.error.message);
-        },
-      }
-    );
+        {
+          onRequest: () => {
+            setIsLoading(true);
+          },
+          onSuccess: () => {
+            router.push("/dashboard");
+            toast.success("Connexion réussie");
+            router.refresh();
+          },
+          onError: (ctx) => {
+            setIsLoading(false);
+            toast.error(ctx.error.message);
+          },
+        }
+      );
+    }
   };
 
   return (
@@ -78,28 +102,32 @@ export default function SignIn() {
               />
             </div>
 
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-neutral-700 dark:text-neutral-400"
-              >
-                Mot de passe
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="••••••••"
-                className="mt-1 w-full rounded-md border-0 bg-white px-4 py-2 text-black shadow-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:bg-neutral-900 dark:text-white"
-              />
-              <div className="mt-2 text-right">
-                <Link
-                  href="/auth/forgot-password"
-                  className="text-sm text-neutral-600 hover:text-black dark:text-neutral-400 dark:hover:text-white"
-                >
-                  Mot de passe oublié ?
-                </Link>
-              </div>
+            <div className="space-y-4">
+              {!isMagicLink && (
+                <>
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-neutral-700 dark:text-neutral-400"
+                  >
+                    Mot de passe
+                  </label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    placeholder="••••••••"
+                    className="mt-1 w-full rounded-md border-0 bg-white px-4 py-2 text-black shadow-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:bg-neutral-900 dark:text-white"
+                  />
+                  <div className="mt-2 text-right">
+                    <Link
+                      href="/auth/forgot-password"
+                      className="text-sm text-neutral-600 hover:text-black dark:text-neutral-400 dark:hover:text-white"
+                    >
+                      Mot de passe oublié ?
+                    </Link>
+                  </div>
+                </>
+              )}
             </div>
 
             <button
@@ -107,7 +135,21 @@ export default function SignIn() {
               disabled={isLoading}
               className="w-full rounded-full bg-black px-4 py-2 text-white transition hover:bg-black/90 dark:bg-white dark:text-black"
             >
-              {isLoading ? "Connexion en cours..." : "Se connecter"}
+              {isLoading
+                ? "Connexion en cours..."
+                : isMagicLink
+                ? "Envoyer le magic link"
+                : "Se connecter"}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setIsMagicLink(!isMagicLink)}
+              className="w-full mt-2 rounded-full border border-black px-4 py-2 text-black transition hover:bg-gray-100 dark:border-white dark:text-white dark:hover:bg-neutral-800"
+            >
+              {isMagicLink
+                ? "Utiliser un mot de passe"
+                : "Utiliser un magic link"}
             </button>
 
             <p className="text-center text-sm text-neutral-600 dark:text-neutral-400">
