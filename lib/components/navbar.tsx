@@ -54,7 +54,7 @@ export async function Header() {
           ) : (
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-2 rounded-md bg-black px-4 py-2 text-sm text-white dark:bg-white dark:text-black">
-                {user?.name ?? user?.email ?? "Utilisateur"}
+                {user?.name || user?.email || "Utilisateur"}
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="min-w-[180px]">
                 <DropdownMenuItem asChild>

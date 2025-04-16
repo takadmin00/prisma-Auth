@@ -17,7 +17,15 @@ const links = [
   { label: "Settings", href: "#", icon: <IconSettings size={20} /> },
 ];
 
-export default function DashboardClient({ user }: { user: any }) {
+export default function DashboardClient({
+  user,
+  account,
+  session,
+}: {
+  user: any;
+  account: any;
+  session: any;
+}) {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -64,12 +72,29 @@ export default function DashboardClient({ user }: { user: any }) {
         <h1 className="text-2xl font-bold text-black dark:text-white">
           Dashboard
         </h1>
-        <div className="mt-4 grid grid-cols-2 gap-4">
+        <div className="mt-4">
+          <h2 className="text-lg font-bold text-black dark:text-white">User</h2>
           {user && (
             <pre className="p-4 bg-white dark:bg-neutral-800 rounded shadow-sm">
               {JSON.stringify(user, null, 2)}
             </pre>
           )}
+        </div>
+        <div className="mt-4">
+          <h2 className="text-lg font-bold text-black dark:text-white">
+            Accounts
+          </h2>
+          <pre className="p-4 bg-white dark:bg-neutral-800 rounded shadow-sm">
+            {JSON.stringify(account, null, 2)}
+          </pre>
+        </div>
+        <div className="mt-4">
+          <h2 className="text-lg font-bold text-black dark:text-white">
+            Session
+          </h2>
+          <pre className="p-4 bg-white dark:bg-neutral-800 rounded shadow-sm">
+            {JSON.stringify(session, null, 2)}
+          </pre>
         </div>
       </main>
     </div>

@@ -174,7 +174,32 @@ export default function SignIn() {
             </div>
           </div>
 
-          <button className="flex w-full items-center justify-center gap-2 rounded-full bg-black px-4 py-2 text-white hover:bg-black/90 dark:bg-white dark:text-black">
+          <button
+            disabled={isLoading}
+            type="button"
+            onClick={() =>
+              authClient.signIn.social(
+                {
+                  provider: "github",
+                  callbackURL: "/dashboard",
+                },
+                {
+                  onRequest: () => {
+                    setIsLoading(true);
+                  },
+                  onSuccess: () => {
+                    toast.success("Connexion réussie");
+                    router.refresh();
+                  },
+                  onError: (ctx) => {
+                    setIsLoading(false);
+                    toast.error(ctx.error.message);
+                  },
+                }
+              )
+            }
+            className="flex w-full items-center justify-center gap-2 rounded-full bg-black px-4 py-2 text-white hover:bg-black/90 dark:bg-white dark:text-black"
+          >
             <IconBrandGithub className="h-5 w-5" />
             <span>Se connecter avec GitHub</span>
           </button>
