@@ -116,7 +116,7 @@ export default function SignUp() {
               disabled={isLoading}
               className="w-full rounded-full bg-black px-4 py-2 text-white transition hover:bg-black/90 dark:bg-white dark:text-black"
             >
-              S'inscrire
+              {isLoading ? "Inscription en cours..." : "S'inscrire"}
             </button>
 
             <p className="text-center text-sm text-neutral-600 dark:text-neutral-400">
