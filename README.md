@@ -1,37 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Prisma Auth Tutorial
 
-## Getting Started
+Une application de démonstration montrant comment implémenter un système d'authentification complet avec Next.js, Prisma et better-auth.
 
-First, run the development server:
+## Fonctionnalités
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- 🔐 Authentification par email et mot de passe
+- ✨ Authentification par Magic Link
+- 🌐 Authentification sociale avec GitHub
+- 🔄 Gestion des sessions
+- 📱 Interface utilisateur responsive
+- 🎨 Mode sombre/clair
+- 🛡️ Sécurité renforcée
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies utilisées
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [Next.js 15](https://nextjs.org/) - Framework React avec App Router
+- [Prisma](https://www.prisma.io/) - ORM pour les bases de données
+- [better-auth](https://github.com/better-auth) - Bibliothèque d'authentification
+- [TypeScript](https://www.typescriptlang.org/) - Typage statique
+- [Tailwind CSS](https://tailwindcss.com/) - Framework CSS utility-first
+- [PostgreSQL](https://www.postgresql.org/) - Base de données relationnelle
+- [Resend](https://resend.com/) - Service d'envoi d'emails
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Prérequis
 
-## Learn More
+- Node.js 18+
+- PostgreSQL
+- Compte GitHub pour l'authentification sociale (optionnel)
+- Compte Resend pour l'envoi d'emails
 
-To learn more about Next.js, take a look at the following resources:
+## Installation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Clonez le dépôt :
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   git clone https://github.com/votre-username/prisma-auth.git
+   cd prisma-auth
+   ```
 
-## Deploy on Vercel
+2. Installez les dépendances :
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   pnpm install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# prisma-Auth
+3. Configurez les variables d'environnement :
+
+   - Copiez le fichier `env.example` vers `.env`
+   - Remplissez les variables avec vos propres informations
+
+   ```bash
+   cp env.example .env
+   ```
+
+   Variables à configurer :
+
+   - `BETTER_AUTH_SECRET` - Clé secrète pour l'authentification (vous pouvez générer une clé aléatoire)
+   - `BETTER_AUTH_URL` - URL de votre application (par défaut: "http://localhost:3000")
+   - `DATABASE_URL` - URL de connexion à votre base de données PostgreSQL
+   - `RESEND_API_KEY` - Clé API Resend pour l'envoi d'emails
+   - `GITHUB_CLIENT_ID` - ID client GitHub (pour l'authentification sociale)
+   - `GITHUB_CLIENT_SECRET` - Secret client GitHub (pour l'authentification sociale)
+
+4. Configurez la base de données :
+
+   ```bash
+   npx prisma migrate dev
+   ```
+
+5. Lancez le serveur de développement :
+
+   ```bash
+   pnpm dev
+   ```
+
+6. Ouvrez votre navigateur et accédez à `http://localhost:3000`
+
+## Structure du projet
+
+- `/app` - Routes et composants Next.js (App Router)
+- `/lib` - Utilitaires et configurations
+- `/prisma` - Schéma Prisma et migrations
+
+## Configuration de l'authentification
+
+L'authentification est configurée dans le fichier `lib/auth.ts`. Elle utilise better-auth avec l'adaptateur Prisma pour gérer les utilisateurs, les sessions et les comptes.
+
+## Déploiement
+
+Cette application peut être facilement déployée sur Vercel, Netlify ou tout autre fournisseur compatible avec Next.js.
+
+## Licence
+
+MIT
+
+Ce projet est sous licence MIT - une licence open source permissive qui permet l'utilisation, la modification et la distribution du code, y compris pour des projets commerciaux.
+
+Pour plus de détails, consultez le fichier [LICENSE](LICENSE) ou [opensource.org/licenses/MIT](https://opensource.org/licenses/MIT).
+
+## Auteur
+
+[Takadmin](https://github.com/takadmin00)
