@@ -8,9 +8,6 @@ Une application de démonstration montrant comment implémenter un système d'au
 - ✨ Authentification par Magic Link
 - 🌐 Authentification sociale avec GitHub
 - 🔄 Gestion des sessions
-- 📱 Interface utilisateur responsive
-- 🎨 Mode sombre/clair
-- 🛡️ Sécurité renforcée
 
 ## Technologies utilisées
 
