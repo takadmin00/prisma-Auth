@@ -8,9 +8,6 @@ Une application de démonstration montrant comment implémenter un système d'au
 - ✨ Authentification par Magic Link
 - 🌐 Authentification sociale avec GitHub
 - 🔄 Gestion des sessions
-- 📱 Interface utilisateur responsive
-- 🎨 Mode sombre/clair
-- 🛡️ Sécurité renforcée
 
 ## Technologies utilisées
 
@@ -34,7 +31,7 @@ Une application de démonstration montrant comment implémenter un système d'au
 1. Clonez le dépôt :
 
    ```bash
-   git clone https://github.com/votre-username/prisma-auth.git
+    git clone https://github.com/takadmin00/prisma-Auth.git
    cd prisma-auth
    ```
 
